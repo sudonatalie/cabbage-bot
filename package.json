@@ -1,0 +1,8 @@
+{
+  "name": "cabbagebot",
+  "version": "1.0.0",
+  "description": "The real Cabbage Bot",
+  "main": "bot.js",
+  "author": "sudonatalie",
+  "dependencies": {}
+}
