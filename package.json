@@ -4,5 +4,7 @@
   "description": "The real Cabbage Bot",
   "main": "bot.js",
   "author": "sudonatalie",
-  "dependencies": {}
+  "dependencies": {
+    "discord.js": "^11.4.2"
+  }
 }
