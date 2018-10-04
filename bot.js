@@ -8,8 +8,28 @@ const searchClient = new GoogleImages(auth.google.cse_id, auth.google.api_key);
 
 bot.on('message', message => {
   if (message.content === '!cabbagebot') {
+    // If the message is from cabbagebot, freak out
+    if (message.author.username === 'cabbagebot') {
+      message.reply({
+        file: 'https://i.imgur.com/U5EJjfG.jpg'
+      });
+    }
+    else {
+      // Search for images
+      searchClient.search('cabbage')
+        // Choose a random image from the list
+        .then(images => images[Math.floor(Math.random() * images.length)])
+        // Get its url
+        .then(image => image.url)
+        // Reply with image file
+        .then(url => message.reply({
+          file: url
+        }));
+    }
+  }
+  else if (message.content === '!mrscabbagebot') {
     // Search for images
-    searchClient.search('cabbage')
+    searchClient.search('banana')
       // Choose a random image from the list
       .then(images => images[Math.floor(Math.random() * images.length)])
       // Get its url
