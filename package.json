@@ -5,6 +5,7 @@
   "main": "bot.js",
   "author": "sudonatalie",
   "dependencies": {
-    "discord.js": "^11.4.2"
+    "discord.js": "^11.4.2",
+    "google-images": "^2.1.0"
   }
 }
