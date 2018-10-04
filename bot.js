@@ -49,6 +49,16 @@ bot.on('message', message => {
         file: url
       }));
   }
+
+  // !cabbageboy
+  else if (message.content === '!cabbageboy') {
+    // Reply with a "young happy man holding cabbage"...
+    message.reply({
+      file: 'https://thumbs.dreamstime.com/b/young-happy-man-cabbage-2350823.jpg'
+    });
+  }
+
+
 });
 
 bot.login(process.env.DISCORD_TOKEN);
