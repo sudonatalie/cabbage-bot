@@ -1,10 +1,8 @@
-const auth = require('./auth.json');
-
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
 const GoogleImages = require('google-images');
-const searchClient = new GoogleImages(auth.google.cse_id, auth.google.api_key);
+const searchClient = new GoogleImages(process.env.GOOGLE_CSE_ID, process.env.GOOGLE_API_KEY);
 
 bot.on('message', message => {
   if (message.content === '!cabbagebot') {
@@ -41,4 +39,4 @@ bot.on('message', message => {
   }
 });
 
-bot.login(auth.discord.token);
+bot.login(process.env.DISCORD_TOKEN);
