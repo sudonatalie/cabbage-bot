@@ -58,6 +58,21 @@ bot.on('message', message => {
     });
   }
 
+  // !cabbagebaby
+  else if (message.content === '!cabbagebaby') {
+    // Reply with baby
+    message.reply({
+      file: 'https://s1.1zoom.ru/b5050/271/Cabbage_Creative_White_background_Infants_528329_2880x1800.jpg'
+    });
+  }
+
+  // !cabbagedog
+  else if (message.content === '!cabbagedog') {
+    // Reply with corgi attack
+    message.reply({
+      file: 'https://cdn.discordapp.com/attachments/241039241197518850/496931244924469248/zK7h7Zl.gif'
+    });
+  }
 
 });
 
