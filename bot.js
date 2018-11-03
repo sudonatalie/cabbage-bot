@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const GoogleImages = require('google-images');
 const Snoowrap = require('snoowrap');
 const Markov = require('markov-strings');
+const he = require('he');
 
 const bot = new Discord.Client();
 
@@ -119,9 +120,9 @@ bot.on('message', message => {
         markov.buildCorpus().then(() => {
           // Generate a post
           markov.generateSentence().then(result => {
-            var raw = result.string;
-            // Minor cleanup of garbage entities/whitespace
-            var response = raw.replace(/&#x200B;/g, '').replace(/\n\s*\n+/g, '\n');
+            const raw = result.string;
+            // Decode HTML entities
+            const response = he.decode(raw);
             // Send reply on Discord
             message.reply(response);
           });
