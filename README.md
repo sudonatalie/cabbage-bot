@@ -18,3 +18,6 @@ Some curated cabbage images.
 
 ### `!cabbageai`
 Cabbage Bot is an avid Fortnite player and is learning to speak by reading [/r/FortNiteBR](https://www.reddit.com/r/FortNiteBR/). Unfortunately, this command is fairly buggy and often leads our bot to trail off talking about cabbage.
+
+#### Example
+![Example of !cabbageai](https://i.imgur.com/nngxXXZ.png)
