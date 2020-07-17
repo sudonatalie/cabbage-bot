@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const GoogleImages = require('google-images');
 const Snoowrap = require('snoowrap');
-const Markov = require('markov-strings');
+const Markov = require('markov-strings').default;
 const he = require('he');
 
 const bot = new Discord.Client();
@@ -117,16 +117,14 @@ bot.on('message', message => {
 
         // Initialize Markov chain text generator
         const markov = new Markov(texts);
-        markov.buildCorpus().then(() => {
-          // Generate a post
-          markov.generateSentence().then(result => {
-            const raw = result.string;
-            // Decode HTML entities
-            const response = he.decode(raw);
-            // Send reply on Discord
-            message.reply(response);
-          });
-        });
+        markov.buildCorpus()
+
+        // Generate a post
+        const result = markov.generate().string;
+        // Decode HTML entities
+        const response = he.decode(result);
+        // Send reply on Discord
+        message.reply(response);
       })
       .catch(error => console.log(error));
   }
