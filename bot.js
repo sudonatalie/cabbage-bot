@@ -32,7 +32,9 @@ bot.on('message', message => {
     // If the message is from cabbagebot, freak out
     if (message.author.username === 'cabbagebot') {
       message.reply({
-        file: 'https://i.imgur.com/U5EJjfG.jpg'
+        files: [{
+          attachment: 'https://i.imgur.com/U5EJjfG.jpg'
+        }]
       });
     }
     // Otherwise reply with a cabbage image
@@ -43,7 +45,9 @@ bot.on('message', message => {
         .then(randomImage)
         // Reply with image file
         .then(url => message.reply({
-          file: url
+          files: [{
+            attachment: url
+          }]
         }));
     }
   }
@@ -57,7 +61,9 @@ bot.on('message', message => {
       .then(randomImage)
       // Reply with image file
       .then(url => message.reply({
-        file: url
+        files: [{
+          attachment: url
+        }]
       }));
   }
 
@@ -65,7 +71,9 @@ bot.on('message', message => {
   else if (message.content === '!cabbageboy') {
     // Reply with a "young happy man holding cabbage"...
     message.reply({
-      file: 'https://thumbs.dreamstime.com/b/young-happy-man-cabbage-2350823.jpg'
+      files: [{
+        attachment: 'https://thumbs.dreamstime.com/b/young-happy-man-cabbage-2350823.jpg'
+      }]
     });
   }
 
@@ -73,7 +81,9 @@ bot.on('message', message => {
   else if (message.content === '!cabbagebaby') {
     // Reply with baby
     message.reply({
-      file: 'https://s1.1zoom.ru/b5050/271/Cabbage_Creative_White_background_Infants_528329_2880x1800.jpg'
+      files: [{
+        attachment: 'https://s1.1zoom.ru/b5050/271/Cabbage_Creative_White_background_Infants_528329_2880x1800.jpg'
+      }]
     });
   }
 
@@ -81,7 +91,9 @@ bot.on('message', message => {
   else if (message.content === '!cabbagedog') {
     // Reply with corgi attack
     message.reply({
-      file: 'https://cdn.discordapp.com/attachments/241039241197518850/496931244924469248/zK7h7Zl.gif'
+      files: [{
+        attachment: 'https://cdn.discordapp.com/attachments/241039241197518850/496931244924469248/zK7h7Zl.gif'
+      }]
     });
   }
 
