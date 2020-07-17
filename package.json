@@ -5,11 +5,11 @@
   "main": "bot.js",
   "author": "sudonatalie",
   "dependencies": {
-    "discord.js": "^11.5.1",
+    "discord.js": "^11.6.4",
     "google-images": "^2.1.0",
     "he": "^1.2.0",
     "markov-strings": "^1.5.2",
     "reddit.js": "^0.1.4",
-    "snoowrap": "^1.17.0"
+    "snoowrap": "^1.21.0"
   }
 }
