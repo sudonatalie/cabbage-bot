@@ -15,7 +15,7 @@ const reddit = new Snoowrap({
   refreshToken: process.env.REDDIT_REFRESH_TOKEN
 });
 
-const randomImage = function(imageSearchResults) {
+const randomImage = function (imageSearchResults) {
   const urls = imageSearchResults
     // Get urls
     .map(image => image.url)
@@ -101,12 +101,12 @@ bot.on('message', message => {
   else if (message.content === '!cabbageai') {
     // Search for "cabbage" posts on Reddit
     const cabbagePromise = reddit.search({
-        query: 'title:cabbage',
-        time: 'all',
-        sort: 'relevance',
-        limit: 500,
-        syntax: 'lucene'
-      });
+      query: 'title:cabbage',
+      time: 'all',
+      sort: 'relevance',
+      limit: 500,
+      syntax: 'lucene'
+    });
 
     // Fetch the hot posts from the FortNiteBR subreddit
     const fortnitePromise = reddit.getSubreddit('FortNiteBR')
@@ -122,7 +122,7 @@ bot.on('message', message => {
         // Filter to self posts and construct list of their title/body texts
         const texts = listings.reduce((accumulator, listing) => {
           if (listing.is_self) {
-             accumulator.push(`${listing.title}\n${listing.selftext}`);
+            accumulator.push(`${listing.title}\n${listing.selftext}`);
           }
           return accumulator;
         }, []);
