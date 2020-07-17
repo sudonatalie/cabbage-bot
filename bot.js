@@ -15,6 +15,43 @@ const reddit = new Snoowrap({
   refreshToken: process.env.REDDIT_REFRESH_TOKEN
 });
 
+var markov = null;
+
+const rebuildMarkov = function () {
+  // Search for "cabbage" posts on Reddit
+  const cabbagePromise = reddit.search({
+    query: 'title:cabbage',
+    time: 'all',
+    sort: 'relevance',
+    limit: 500,
+    syntax: 'lucene'
+  });
+
+  // Fetch the hot posts from the FortNiteBR subreddit
+  const fortnitePromise = reddit.getSubreddit('FortNiteBR')
+    .getHot({
+      limit: 500
+    });
+
+  // Combine both results
+  return Promise.all([cabbagePromise, fortnitePromise])
+    .then(bothResults => {
+      const listings = bothResults[0].concat(bothResults[1]);
+
+      // Filter to self posts and construct list of their title/body texts
+      const texts = listings.reduce((accumulator, listing) => {
+        if (listing.is_self) {
+          accumulator.push(`${listing.title}\n${listing.selftext}`);
+        }
+        return accumulator;
+      }, []);
+
+      // Initialize Markov chain text generator
+      markov = new Markov(texts, { stateSize: 2 });
+      return markov.buildCorpusAsync();
+    });
+};
+
 const randomImage = function (imageSearchResults) {
   const urls = imageSearchResults
     // Get urls
@@ -99,50 +136,25 @@ bot.on('message', message => {
 
   // !cabbageai
   else if (message.content === '!cabbageai') {
-    // Search for "cabbage" posts on Reddit
-    const cabbagePromise = reddit.search({
-      query: 'title:cabbage',
-      time: 'all',
-      sort: 'relevance',
-      limit: 500,
-      syntax: 'lucene'
-    });
-
-    // Fetch the hot posts from the FortNiteBR subreddit
-    const fortnitePromise = reddit.getSubreddit('FortNiteBR')
-      .getHot({
-        limit: 500
-      });
-
-    // Combine both results
-    Promise.all([cabbagePromise, fortnitePromise])
-      .then(bothResults => {
-        const listings = bothResults[0].concat(bothResults[1]);
-
-        // Filter to self posts and construct list of their title/body texts
-        const texts = listings.reduce((accumulator, listing) => {
-          if (listing.is_self) {
-            accumulator.push(`${listing.title}\n${listing.selftext}`);
-          }
-          return accumulator;
-        }, []);
-
-        // Initialize Markov chain text generator
-        const markov = new Markov(texts, { stateSize: 2 });
-        const options = {
-          maxTries: 20
-        };
-        markov.buildCorpus()
-
+    markovPromise
+      .then(() => {
         // Generate a post
-        const result = markov.generate(options);
+        const result = markov.generate({
+          maxTries: 20
+        });
         // Decode HTML entities
         const response = he.decode(result.string);
         // Send reply on Discord
         message.reply(response);
-      })
-      .catch(error => console.log(error));
+      });
   }
 });
+
+// Rebuild corpus every hour
+var markovPromise = rebuildMarkov();
+var hour = 60 * 60 * 1000;
+setInterval(() => {
+  markovPromise = rebuildMarkov();
+}, hour);
 
 bot.login(process.env.DISCORD_TOKEN);
