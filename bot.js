@@ -19,37 +19,33 @@ var markov = null;
 
 const rebuildMarkov = function () {
   // Search for "cabbage" posts on Reddit
-  const cabbagePromise = reddit.search({
-    query: 'title:cabbage',
-    time: 'all',
-    sort: 'relevance',
-    limit: 500,
-    syntax: 'lucene'
-  });
+  const cabbagePromise = reddit
+    .search({
+      query: 'cabbage',
+      time: 'all',
+      sort: 'relevance',
+      limit: 1000
+    })
+    .map(post => `${post.title}\n${post.selftext}`.trim());
 
-  // Fetch the hot posts from the FortNiteBR subreddit
+  // Fetch the hot self-posts from the FortNiteBR subreddit
   const fortnitePromise = reddit.getSubreddit('FortNiteBR')
     .getHot({
-      limit: 500
-    });
+      limit: 1000
+    })
+    .filter(post => post.is_self)
+    .map(post => `${post.title}\n${post.selftext}`);
 
   // Combine both results
   return Promise.all([cabbagePromise, fortnitePromise])
     .then(bothResults => {
-      const listings = bothResults[0].concat(bothResults[1]);
-
-      // Filter to self posts and construct list of their title/body texts
-      const texts = listings.reduce((accumulator, listing) => {
-        if (listing.is_self) {
-          accumulator.push(`${listing.title}\n${listing.selftext}`);
-        }
-        return accumulator;
-      }, []);
+      const texts = bothResults.flat();
 
       // Initialize Markov chain text generator
       markov = new Markov(texts, { stateSize: 2 });
       return markov.buildCorpusAsync();
-    });
+    })
+    .catch(error => console.log(error));
 };
 
 const randomImage = function (imageSearchResults) {
@@ -140,13 +136,21 @@ bot.on('message', message => {
       .then(() => {
         // Generate a post
         const result = markov.generate({
-          maxTries: 20
+          maxTries: 100,
+          filter: (result) => {
+            return result.score > 5 &&
+              result.refs.length > 2 &&
+              result.string.length < 400 &&
+              result.string.toLowerCase().includes("cabbage");
+          }
         });
         // Decode HTML entities
         const response = he.decode(result.string);
         // Send reply on Discord
         message.reply(response);
-      });
+      })
+      // Silently catch if fail to generate sentence
+      .catch(error => console.log(error));
   }
 });
 
