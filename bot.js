@@ -128,13 +128,16 @@ bot.on('message', message => {
         }, []);
 
         // Initialize Markov chain text generator
-        const markov = new Markov(texts);
+        const markov = new Markov(texts, { stateSize: 2 });
+        const options = {
+          maxTries: 20
+        };
         markov.buildCorpus()
 
         // Generate a post
-        const result = markov.generate().string;
+        const result = markov.generate(options);
         // Decode HTML entities
-        const response = he.decode(result);
+        const response = he.decode(result.string);
         // Send reply on Discord
         message.reply(response);
       })
