@@ -5,7 +5,7 @@
   "main": "bot.js",
   "author": "sudonatalie",
   "dependencies": {
-    "discord.js": "^12.2.0",
+    "discord.js": "^12.3.1",
     "google-images": "^2.1.0",
     "he": "^1.2.0",
     "markov-strings": "^2.1.1",
